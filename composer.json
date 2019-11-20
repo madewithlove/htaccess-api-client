@@ -3,7 +3,6 @@
     "description": "API client for the best htaccess tester in the world.",
     "type": "package",
     "require": {
-        "symfony/console": "^4.3",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
         "php-http/guzzle6-adapter": "^2.0",
