@@ -8,7 +8,7 @@ jobs:
       matrix:
         php-versions: ['7.1', '7.2', '7.3']
     container:
-      image: php:${{ matrix.php }}-alpine
+      image: php:${{ matrix.php-versions }}-alpine
     steps:
     - uses: actions/checkout@v1
     - name: Output PHP Version
