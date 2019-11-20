@@ -4,9 +4,12 @@ on: push
 jobs:
   phpunit:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: ['7.1', '7.2', '7.3']
     steps:
     - uses: actions/checkout@v1
     - name: Install dependencies
-      run: composer install -n --prefer-dist
+      run: php${{ matrix.php-versions }} composer install -n --prefer-dist
     - name: Run PHPUnit unit tests
-      run: vendor/bin/phpunit tests/
+      run: php${{ matrix.php-versions }} vendor/bin/phpunit tests/
