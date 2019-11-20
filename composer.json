@@ -1,7 +1,7 @@
 {
-    "name": "madewithlove/htaccess",
-    "description": "CLI interface for the best htaccess tester in the world.",
-    "type": "project",
+    "name": "madewithlove/htaccess-api-client",
+    "description": "API client for the best htaccess tester in the world.",
+    "type": "package",
     "require": {
         "symfony/console": "^4.3",
         "psr/http-client": "^1.0",
@@ -9,9 +9,6 @@
         "php-http/guzzle6-adapter": "^2.0",
         "http-interop/http-factory-guzzle": "^1.0"
     },
-    "bin": [
-        "bin/htaccess"
-    ],
     "autoload": {
         "psr-4": {"Madewithlove\\": "src/"}
     },
