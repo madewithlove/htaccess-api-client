@@ -7,9 +7,13 @@ jobs:
     strategy:
       matrix:
         php-versions: ['7.1', '7.2', '7.3']
+    container:
+      image: php:${{ matrix.php }}-alpine
     steps:
     - uses: actions/checkout@v1
+    - name: Output PHP Version
+      run: php -v
     - name: Install dependencies
-      run: php${{ matrix.php-versions }} composer install -n --prefer-dist
+      run: composer install -n --prefer-dist
     - name: Run PHPUnit unit tests
-      run: php${{ matrix.php-versions }} vendor/bin/phpunit tests/
+      run: vendor/bin/phpunit tests/
