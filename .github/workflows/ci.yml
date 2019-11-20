@@ -11,8 +11,8 @@ jobs:
       image: php:${{ matrix.php-versions }}-alpine
     steps:
     - uses: actions/checkout@v1
-    - name: Output PHP Version
-      run: php -v
+    - name: Install composer
+      run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     - name: Install dependencies
       run: composer install -n --prefer-dist
     - name: Run PHPUnit unit tests
