@@ -23,7 +23,7 @@ final class HtaccessClient
         $this->requestFactory = $requestFactory;
     }
 
-    public function test(string $url, string $htaccess): HtaccessResult
+    public function test(string $url, string $htaccess, string $referrer = ''): HtaccessResult
     {
         $request = $this->requestFactory->createServerRequest(
             'POST',
@@ -34,7 +34,7 @@ final class HtaccessClient
         $body->write(json_encode([
             'url' => $url,
             'htaccess' => $htaccess,
-            'referrer' => '',
+            'referrer' => $referrer,
             'serverName' => '',
         ]));
 
