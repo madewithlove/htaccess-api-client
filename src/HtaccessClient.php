@@ -23,8 +23,12 @@ final class HtaccessClient
         $this->requestFactory = $requestFactory;
     }
 
-    public function test(string $url, string $htaccess, string $referrer = ''): HtaccessResult
-    {
+    public function test(
+        string $url,
+        string $htaccess,
+        ?string $referrer = '',
+        ?string $serverName = ''
+    ): HtaccessResult {
         $request = $this->requestFactory->createServerRequest(
             'POST',
             'https://htaccess.madewithlove.be/api'
@@ -34,8 +38,8 @@ final class HtaccessClient
         $body->write(json_encode([
             'url' => $url,
             'htaccess' => $htaccess,
-            'referrer' => $referrer,
-            'serverName' => '',
+            'referrer' => $referrer ?? '',
+            'serverName' => $serverName ?? '',
         ]));
 
         $request = $request
