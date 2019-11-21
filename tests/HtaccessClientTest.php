@@ -60,4 +60,26 @@ final class HtaccessClientTest extends TestCase
             $response->getOutputUrl()
         );
     }
+
+    /** @test */
+    public function it allows for passing a server name(): void
+    {
+        $client = new HtaccessClient(
+            new Client(),
+            new ServerRequestFactory()
+        );
+
+        $response = $client->test(
+            'http://localhost',
+            'RewriteCond %{SERVER_NAME} example.com
+             RewriteRule .* /example-page [L]',
+            null,
+            'example.com'
+        );
+
+        $this->assertEquals(
+            'http://localhost/example-page',
+            $response->getOutputUrl()
+        );
+    }
 }
