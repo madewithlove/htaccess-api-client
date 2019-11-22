@@ -23,6 +23,9 @@ final class HtaccessClient
         $this->requestFactory = $requestFactory;
     }
 
+    /**
+     * @throws HtaccessException
+     */
     public function test(
         string $url,
         string $htaccess,
