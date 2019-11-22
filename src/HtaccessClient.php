@@ -50,9 +50,7 @@ final class HtaccessClient
         $responseData = json_decode($response->getBody()->getContents(), true);
 
         if (isset($responseData['errors'])) {
-            throw new HtaccessException(
-                json_encode($responseData['errors'])
-            );
+            throw HtaccessException::fromApiErrors($responseData['errors']);
         }
 
         return new HtaccessResult(
