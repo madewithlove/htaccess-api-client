@@ -91,6 +91,7 @@ final class HtaccessClientTest extends TestCase
             new ServerRequestFactory()
         );
 
+        $this->expectExceptionMessage('url: This is not a valid url');
         $this->expectException(HtaccessException::class);
         $client->test(
             'http:localhost',
