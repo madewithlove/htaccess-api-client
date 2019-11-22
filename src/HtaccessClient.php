@@ -49,6 +49,12 @@ final class HtaccessClient
         $response = $this->httpClient->sendRequest($request);
         $responseData = json_decode($response->getBody()->getContents(), true);
 
+        if (isset($responseData['errors'])) {
+            throw new HtaccessException(
+                json_encode($responseData['errors'])
+            );
+        }
+
         return new HtaccessResult(
             $responseData['output_url'],
             array_map(
