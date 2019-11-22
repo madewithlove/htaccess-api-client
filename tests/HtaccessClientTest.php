@@ -2,9 +2,9 @@
 
 namespace Madewithlove;
 
+use Http\Adapter\Guzzle6\Client;
 use Http\Factory\Guzzle\ServerRequestFactory;
 use PHPUnit\Framework\TestCase;
-use Http\Adapter\Guzzle6\Client;
 
 final class HtaccessClientTest extends TestCase
 {
@@ -80,6 +80,38 @@ final class HtaccessClientTest extends TestCase
         $this->assertEquals(
             'http://localhost/example-page',
             $response->getOutputUrl()
+        );
+    }
+
+    /** @test */
+    public function it throws an exception when we pass an invalid url(): void
+    {
+        $client = new HtaccessClient(
+            new Client(),
+            new ServerRequestFactory()
+        );
+
+        $this->expectExceptionMessage('url: This is not a valid url');
+        $this->expectException(HtaccessException::class);
+        $client->test(
+            'http:localhost',
+            'RewriteRule .* /example-page [L]'
+        );
+    }
+
+    /** @test */
+    public function it throws an exception when we pass multiple invalid fields(): void
+    {
+        $client = new HtaccessClient(
+            new Client(),
+            new ServerRequestFactory()
+        );
+
+        $this->expectExceptionMessage("url: This is not a valid url\nhtaccess: htaccess must not be empty");
+        $this->expectException(HtaccessException::class);
+        $client->test(
+            'http:localhost',
+            ''
         );
     }
 }

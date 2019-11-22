@@ -23,6 +23,9 @@ final class HtaccessClient
         $this->requestFactory = $requestFactory;
     }
 
+    /**
+     * @throws HtaccessException
+     */
     public function test(
         string $url,
         string $htaccess,
@@ -48,6 +51,10 @@ final class HtaccessClient
 
         $response = $this->httpClient->sendRequest($request);
         $responseData = json_decode($response->getBody()->getContents(), true);
+
+        if (isset($responseData['errors'])) {
+            throw HtaccessException::fromApiErrors($responseData['errors']);
+        }
 
         return new HtaccessResult(
             $responseData['output_url'],
