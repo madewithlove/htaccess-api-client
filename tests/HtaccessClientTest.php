@@ -98,4 +98,20 @@ final class HtaccessClientTest extends TestCase
             'RewriteRule .* /example-page [L]'
         );
     }
+
+    /** @test */
+    public function it throws an exception when we pass multiple invalid fields(): void
+    {
+        $client = new HtaccessClient(
+            new Client(),
+            new ServerRequestFactory()
+        );
+
+        $this->expectExceptionMessage("url: This is not a valid url\nhtaccess: htaccess must not be empty");
+        $this->expectException(HtaccessException::class);
+        $client->test(
+            'http:localhost',
+            ''
+        );
+    }
 }
