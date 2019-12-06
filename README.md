@@ -1,5 +1,9 @@
 # htaccess-api-client
 
+[![Build status](https://github.com/madewithlove/htaccess-api-client/workflows/Continious%20Integration/badge.svg)](https://github.com/madewithlove/htaccess-api-client/actions?query=branch%3Amaster)
+[![Latest Stable Version](https://poser.pugx.org/madewithlove/htaccess-api-client/version)](https://packagist.org/packages/madewithlove/htaccess-api-client)
+[![License](https://poser.pugx.org/madewithlove/htaccess-api-client/license)](https://packagist.org/packages/madewithlove/htaccess-api-client)
+
 This is an API client to interact with the [Htaccess tester](https://htaccess.madewithlove.be/).
 
 ### Installation

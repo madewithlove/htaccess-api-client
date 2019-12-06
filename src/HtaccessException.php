@@ -15,6 +15,6 @@ class HtaccessException extends Exception
             $errors
         );
 
-        return new static(implode("\n", $errorMessages));
+        return new self(implode("\n", $errorMessages));
     }
 }
