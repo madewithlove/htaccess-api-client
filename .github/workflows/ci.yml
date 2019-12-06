@@ -16,11 +16,10 @@ jobs:
     - name: Install dependencies
       run: composer install -n --prefer-dist
     - name: Run PHPUnit unit tests
-      run: vendor/bin/phpunit tests/ --coverage-xml=coverage.xml --whitelist src/ --coverage-text
+      run: vendor/bin/phpunit tests/ --coverage-clover=build/logs/clover.xml --whitelist src/
     - uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
       if: matrix.php-versions == '7.3'
 
   phpstan:
