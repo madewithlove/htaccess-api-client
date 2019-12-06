@@ -15,8 +15,10 @@ jobs:
       run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     - name: Install dependencies
       run: composer install -n --prefer-dist
+    - name: Install pcov to generate code coverage
+      run: pecl install pcov
     - name: Run PHPUnit unit tests
-      run: vendor/bin/phpunit tests/ --coverage-xml=coverage.xml
+      run: php -dpcov.enabled=1 -dpcov.directory=. -dpcov.exclude="~vendor~" vendor/bin/phpunit tests/ --coverage-xml=coverage.xml
 
   phpstan:
     name: PHPStan
