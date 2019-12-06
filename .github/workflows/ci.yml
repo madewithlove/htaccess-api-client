@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: composer install -n --prefer-dist
     - name: Run PHPUnit unit tests
-      run: vendor/bin/phpunit tests/ --coverage-xml=coverage.xml --whitelist src/
+      run: vendor/bin/phpunit tests/ --coverage-xml=coverage.xml --whitelist src/ --coverage-text
     - uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
