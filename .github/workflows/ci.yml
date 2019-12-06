@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: composer install -n --prefer-dist
     - name: Run PHPUnit unit tests
-      run: vendor/bin/phpunit tests/
+      run: vendor/bin/phpunit tests/ --coverage-xml=coverage.xml
 
   phpstan:
     name: PHPStan
