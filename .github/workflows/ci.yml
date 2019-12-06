@@ -13,8 +13,6 @@ jobs:
       with:
         php-version: ${{ matrix.php-versions }}
         coverage: pcov
-    - name: Install composer
-      run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     - name: Install dependencies
       run: composer install -n --prefer-dist
     - name: Run PHPUnit unit tests
