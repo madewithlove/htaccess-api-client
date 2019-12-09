@@ -81,6 +81,11 @@ final class HtaccessClientTest extends TestCase
             'http://localhost/example-page',
             $response->getOutputUrl()
         );
+        $this->assertEquals('RewriteCond %{SERVER_NAME} example.com', $response->getLines()[0]->getLine());
+        $this->assertStringContainsString('condition was met', $response->getLines()[0]->getMessage());
+        $this->assertTrue($response->getLines()[0]->isMet());
+        $this->assertTrue($response->getLines()[0]->isValid());
+        $this->assertTrue($response->getLines()[0]->wasReached());
     }
 
     /** @test */
