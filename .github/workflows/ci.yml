@@ -7,16 +7,20 @@ jobs:
     strategy:
       matrix:
         php-versions: ['7.2', '7.3']
-    container:
-      image: php:${{ matrix.php-versions }}-alpine
     steps:
     - uses: actions/checkout@v1
-    - name: Install composer
-      run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    - uses: shivammathur/setup-php@v1
+      with:
+        php-version: ${{ matrix.php-versions }}
+        coverage: pcov
     - name: Install dependencies
       run: composer install -n --prefer-dist
     - name: Run PHPUnit unit tests
-      run: vendor/bin/phpunit tests/
+      run: vendor/bin/phpunit tests/ --coverage-clover=build/logs/clover.xml --whitelist src/
+    - uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+      if: matrix.php-versions == '7.3'
 
   phpstan:
     name: PHPStan
