@@ -119,4 +119,30 @@ final class HtaccessClientTest extends TestCase
             ''
         );
     }
+
+    /** @test */
+    public function it can share a test run(): void
+    {
+        $client = new HtaccessClient(
+            new Client(),
+            new ServerRequestFactory()
+        );
+
+        $response = $client->share(
+            'http://localhost',
+            'RewriteCond %{SERVER_NAME} example.com
+             RewriteRule .* /example-page [L]',
+            null,
+            'example.com'
+        );
+
+        $this->assertStringStartsWith(
+            'https://htaccess.madewithlove.be',
+            $response->getShareUrl()
+        );
+        $this->assertRegExp(
+            '#.*?share=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}#',
+            $response->getShareUrl()
+        );
+    }
 }
