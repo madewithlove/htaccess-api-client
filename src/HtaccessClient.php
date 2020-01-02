@@ -72,4 +72,40 @@ final class HtaccessClient
             )
         );
     }
+
+    /**
+     * @throws HtaccessException
+     */
+    public function share(
+        string $url,
+        string $htaccess,
+        ?string $referrer = '',
+        ?string $serverName = ''
+    ): ShareResult {
+        $request = $this->requestFactory->createServerRequest(
+            'POST',
+            'https://htaccess.madewithlove.be/api/share'
+        );
+
+        $body = $request->getBody();
+        $body->write(json_encode([
+            'url' => $url,
+            'htaccess' => $htaccess,
+            'referrer' => $referrer ?? '',
+            'serverName' => $serverName ?? '',
+        ]));
+
+        $request = $request
+            ->withHeader('Content-Type', 'application/json')
+            ->withBody($body);
+
+        $response = $this->httpClient->sendRequest($request);
+        $responseData = json_decode($response->getBody()->getContents(), true);
+
+        if (isset($responseData['errors'])) {
+            throw HtaccessException::fromApiErrors($responseData['errors']);
+        }
+
+        return new ShareResult($responseData['url']);
+    }
 }
