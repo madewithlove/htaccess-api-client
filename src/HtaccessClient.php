@@ -32,29 +32,16 @@ final class HtaccessClient
         ?string $referrer = '',
         ?string $serverName = ''
     ): HtaccessResult {
-        $request = $this->requestFactory->createServerRequest(
+        $responseData = $this->request(
             'POST',
-            'https://htaccess.madewithlove.be/api'
+            '',
+            [
+                'url' => $url,
+                'htaccess' => $htaccess,
+                'referrer' => $referrer ?? '',
+                'serverName' => $serverName ?? '',
+            ]
         );
-
-        $body = $request->getBody();
-        $body->write(json_encode([
-            'url' => $url,
-            'htaccess' => $htaccess,
-            'referrer' => $referrer ?? '',
-            'serverName' => $serverName ?? '',
-        ]));
-
-        $request = $request
-            ->withHeader('Content-Type', 'application/json')
-            ->withBody($body);
-
-        $response = $this->httpClient->sendRequest($request);
-        $responseData = json_decode($response->getBody()->getContents(), true);
-
-        if (isset($responseData['errors'])) {
-            throw HtaccessException::fromApiErrors($responseData['errors']);
-        }
 
         return new HtaccessResult(
             $responseData['output_url'],
@@ -71,5 +58,53 @@ final class HtaccessClient
                 $responseData['lines']
             )
         );
+    }
+
+    /**
+     * @throws HtaccessException
+     */
+    public function share(
+        string $url,
+        string $htaccess,
+        ?string $referrer = '',
+        ?string $serverName = ''
+    ): ShareResult {
+        $responseData = $this->request(
+            'POST',
+            '/share',
+            [
+                'url' => $url,
+                'htaccess' => $htaccess,
+                'referrer' => $referrer ?? '',
+                'serverName' => $serverName ?? '',
+            ]
+        );
+
+        return new ShareResult($responseData['url']);
+    }
+
+    private function request(string $method, string $endpoint = '', array $requestData = []): array
+    {
+        $request = $this->requestFactory->createServerRequest(
+            $method,
+            'https://htaccess.madewithlove.be/api' . $endpoint
+        );
+
+        $body = $request->getBody();
+        $body->write(json_encode($requestData));
+
+        $request = $request
+            ->withHeader('Content-Type', 'application/json')
+            ->withBody($body);
+
+        $response = $this->httpClient->sendRequest($request);
+
+        $responseData = json_decode($response->getBody()->getContents(), true);
+
+        if (isset($responseData['errors'])) {
+            throw HtaccessException::fromApiErrors($responseData['errors']);
+        }
+
+        return $responseData;
     }
 }
