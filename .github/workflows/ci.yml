@@ -21,6 +21,8 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
       if: matrix.php-versions == '7.3'
+    - name: Run mutation tests
+      run: vendor/bin/infection --min-msi=100 --min-covered-msi=100 --show-mutations
 
   phpstan:
     name: PHPStan
