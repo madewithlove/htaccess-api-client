@@ -21,6 +21,20 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
       if: matrix.php-versions == '7.3'
+
+  infection:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: ['7.2', '7.3']
+    steps:
+    - uses: actions/checkout@v1
+    - uses: shivammathur/setup-php@v1
+      with:
+        php-version: ${{ matrix.php-versions }}
+        coverage: pcov
+    - name: Install dependencies
+      run: composer install -n --prefer-dist
     - name: Run mutation tests
       run: vendor/bin/infection --min-msi=100 --min-covered-msi=100 --show-mutations
 
