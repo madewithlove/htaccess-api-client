@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['7.2', '7.3']
+        php-versions: ['7.2', '7.3', '7.4']
     steps:
     - uses: actions/checkout@v1
     - uses: shivammathur/setup-php@v1
@@ -16,11 +16,27 @@ jobs:
     - name: Install dependencies
       run: composer install -n --prefer-dist
     - name: Run PHPUnit unit tests
-      run: vendor/bin/phpunit tests/ --coverage-clover=build/logs/clover.xml --whitelist src/
+      run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml --whitelist src/
     - uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-      if: matrix.php-versions == '7.3'
+      if: matrix.php-versions == '7.4'
+
+  infection:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: ['7.2', '7.3', '7.4']
+    steps:
+    - uses: actions/checkout@v1
+    - uses: shivammathur/setup-php@v1
+      with:
+        php-version: ${{ matrix.php-versions }}
+        coverage: pcov
+    - name: Install dependencies
+      run: composer install -n --prefer-dist
+    - name: Run mutation tests
+      run: vendor/bin/infection --min-msi=85 --min-covered-msi=85 --show-mutations
 
   phpstan:
     name: PHPStan
