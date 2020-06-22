@@ -83,6 +83,33 @@ final class HtaccessClient
         return new ShareResult($responseData['url']);
     }
 
+    /**
+     * @throws HtaccessException
+     */
+    public function getShared(string $shareUuid): HtaccessResult
+    {
+        $responseData = $this->request(
+            'GET',
+            '/share?share=' . $shareUuid
+        );
+
+        return new HtaccessResult(
+            $responseData['output_url'],
+            array_map(
+                function (array $line) {
+                    return new ResultLine(
+                        $line['value'],
+                        $line['message'],
+                        $line['isMet'],
+                        $line['isValid'],
+                        $line['wasReached']
+                    );
+                },
+                $responseData['lines']
+            )
+        );
+    }
+
     private function request(string $method, string $endpoint = '', array $requestData = []): array
     {
         $request = $this->requestFactory->createServerRequest(
