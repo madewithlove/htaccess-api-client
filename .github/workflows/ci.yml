@@ -9,6 +9,10 @@ jobs:
         php-versions: ['7.2', '7.3', '7.4']
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        path: vendor
+        key: dependencies-${{ matrix.php-versions }}-${{ hashFiles('composer.json') }}
     - uses: shivammathur/setup-php@v1
       with:
         php-version: ${{ matrix.php-versions }}
@@ -29,6 +33,10 @@ jobs:
         php-versions: ['7.2', '7.3', '7.4']
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        path: vendor
+        key: dependencies-${{ matrix.php-versions }}-${{ hashFiles('composer.json') }}
     - uses: shivammathur/setup-php@v1
       with:
         php-version: ${{ matrix.php-versions }}
