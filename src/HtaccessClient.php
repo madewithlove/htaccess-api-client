@@ -76,7 +76,7 @@ final class HtaccessClient
                 'url' => $url,
                 'htaccess' => $htaccess,
                 'referrer' => $referrer ?? '',
-                'serverName' => $serverName ?? '',
+                'server_name' => $serverName ?? '',
             ]
         );
 
