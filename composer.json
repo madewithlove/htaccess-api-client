@@ -18,6 +18,6 @@
         "phpunit/phpunit": "^8.4",
         "php-http/guzzle6-adapter": "^2.0",
         "http-interop/http-factory-guzzle": "^1.0",
-        "infection/infection": "^0.16"
+        "infection/infection": "^0.15|^0.16"
     }
 }
