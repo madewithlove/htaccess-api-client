@@ -130,6 +130,83 @@ final class HtaccessClientTest extends TestCase
 
         $response = $client->share(
             'http://localhost',
+            'RewriteRule .* /foo [R]'
+        );
+
+        $this->assertStringStartsWith(
+            'https://htaccess.madewithlove.be',
+            $response->getShareUrl()
+        );
+        $this->assertRegExp(
+            '#.*?share=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}#',
+            $response->getShareUrl()
+        );
+
+        $shareUuid = substr($response->getShareUrl(), -36);
+        $sharedResult = $client->getShared($shareUuid);
+
+        $this->assertEquals(
+            'http://localhost/foo',
+            $sharedResult->getOutputUrl()
+        );
+
+        $this->assertEquals(
+            [
+                new ResultLine(
+                    'RewriteRule .* /foo [R]',
+                    "The new url is http://localhost/foo\nTest are stopped, a redirect will be made with status code 302",
+                    true,
+                    true,
+                    true
+                ),
+            ],
+            $sharedResult->getLines()
+        );
+    }
+
+    /** @test */
+    public function it can share a test run with a referer(): void
+    {
+        $client = new HtaccessClient(
+            new Client(),
+            new ServerRequestFactory()
+        );
+
+        $response = $client->share(
+            'http://localhost',
+            'RewriteCond %{HTTP_REFERER} http://example.com
+             RewriteRule .* /example-page [L]',
+            'http://example.com'
+        );
+
+        $this->assertStringStartsWith(
+            'https://htaccess.madewithlove.be',
+            $response->getShareUrl()
+        );
+        $this->assertRegExp(
+            '#.*?share=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}#',
+            $response->getShareUrl()
+        );
+
+        $shareUuid = substr($response->getShareUrl(), -36);
+        $sharedResult = $client->getShared($shareUuid);
+
+        $this->assertEquals(
+            'http://localhost/example-page',
+            $sharedResult->getOutputUrl()
+        );
+    }
+
+    /** @test */
+    public function it can share a test run with a server name(): void
+    {
+        $client = new HtaccessClient(
+            new Client(),
+            new ServerRequestFactory()
+        );
+
+        $response = $client->share(
+            'http://localhost',
             'RewriteCond %{SERVER_NAME} example.com
              RewriteRule .* /example-page [L]',
             null,
@@ -143,6 +220,14 @@ final class HtaccessClientTest extends TestCase
         $this->assertRegExp(
             '#.*?share=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}#',
             $response->getShareUrl()
+        );
+
+        $shareUuid = substr($response->getShareUrl(), -36);
+        $sharedResult = $client->getShared($shareUuid);
+
+        $this->assertEquals(
+            'http://localhost/example-page',
+            $sharedResult->getOutputUrl()
         );
     }
 }
