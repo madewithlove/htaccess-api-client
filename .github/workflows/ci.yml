@@ -36,7 +36,7 @@ jobs:
     - name: Install dependencies
       run: composer install -n --prefer-dist
     - name: Run mutation tests
-      run: vendor/bin/infection --min-msi=85 --min-covered-msi=85 --show-mutations
+      run: vendor/bin/infection --min-msi=100 --min-covered-msi=100 --show-mutations
 
   phpstan:
     name: PHPStan
