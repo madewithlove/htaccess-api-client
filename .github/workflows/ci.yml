@@ -18,7 +18,11 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         coverage: pcov
     - name: Install dependencies
+      run: composer install -n --prefer-dist
+      if: matrix.php-versions != '8.0'
+    - name: Install dependencies
       run: composer self-update --snapshot && composer install -n --prefer-dist --ignore-platform-req=php
+      if: matrix.php-versions == '8.0'
     - name: Run PHPUnit unit tests
       run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml --whitelist src/
     - uses: codecov/codecov-action@v1
@@ -42,7 +46,11 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         coverage: pcov
     - name: Install dependencies
+      run: composer install -n --prefer-dist
+      if: matrix.php-versions != '8.0'
+    - name: Install dependencies
       run: composer self-update --snapshot && composer install -n --prefer-dist --ignore-platform-req=php
+      if: matrix.php-versions == '8.0'
     - name: Run mutation tests
       run: vendor/bin/infection --min-msi=100 --min-covered-msi=100 --show-mutations
 
