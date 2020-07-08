@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="vendor/autoload.php"
+    convertWarningsToExceptions="false"
     colors="true">
     <testsuite name="Tests">
         <directory>tests</directory>

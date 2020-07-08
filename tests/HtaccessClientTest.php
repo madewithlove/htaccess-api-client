@@ -137,7 +137,7 @@ final class HtaccessClientTest extends TestCase
             'https://htaccess.madewithlove.be',
             $response->getShareUrl()
         );
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '#.*?share=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}#',
             $response->getShareUrl()
         );
@@ -183,7 +183,7 @@ final class HtaccessClientTest extends TestCase
             'https://htaccess.madewithlove.be',
             $response->getShareUrl()
         );
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '#.*?share=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}#',
             $response->getShareUrl()
         );
@@ -217,7 +217,7 @@ final class HtaccessClientTest extends TestCase
             'https://htaccess.madewithlove.be',
             $response->getShareUrl()
         );
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '#.*?share=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}#',
             $response->getShareUrl()
         );
