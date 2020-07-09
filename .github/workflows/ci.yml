@@ -19,11 +19,11 @@ jobs:
         coverage: pcov
         tools: composer:v2
     - name: Install dependencies
-      run: composer install -n --prefer-dist
       if: matrix.php-versions != '8.0'
+      run: composer install -n --prefer-dist
     - name: Install dependencies
-      run: composer install -n --prefer-dist --ignore-platform-req=php
       if: matrix.php-versions == '8.0'
+      run: composer install -n --prefer-dist --ignore-platform-req=php
     - name: Run PHPUnit unit tests
       run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml --whitelist src/
     - uses: codecov/codecov-action@v1
@@ -48,11 +48,11 @@ jobs:
         coverage: pcov
         tools: composer:v2
     - name: Install dependencies
-      run: composer install -n --prefer-dist
       if: matrix.php-versions != '8.0'
+      run: composer install -n --prefer-dist
     - name: Install dependencies
-      run: composer install -n --prefer-dist --ignore-platform-req=php
       if: matrix.php-versions == '8.0'
+      run: composer install -n --prefer-dist --ignore-platform-req=php
     - name: Run mutation tests
       run: vendor/bin/infection --min-msi=100 --min-covered-msi=100 --show-mutations --debug -vvv
 
