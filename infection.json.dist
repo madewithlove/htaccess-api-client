@@ -4,10 +4,13 @@
             "src"
         ]
     },
+    "timeout": 200,
     "logs": {
         "text": "infection.log"
     },
     "mutators": {
         "@default": true
-    }
+    },
+    "minMsi": 100,
+    "minCoveredMsi": 100
 }

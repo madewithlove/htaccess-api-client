@@ -33,6 +33,7 @@ final class HtaccessClientTest extends TestCase
                     "The new url is http://localhost/foo\nTest are stopped, a redirect will be made with status code 302",
                     true,
                     true,
+                    true,
                     true
                 ),
             ],
@@ -86,6 +87,7 @@ final class HtaccessClientTest extends TestCase
         $this->assertTrue($response->getLines()[0]->isMet());
         $this->assertTrue($response->getLines()[0]->isValid());
         $this->assertTrue($response->getLines()[0]->wasReached());
+        $this->assertTrue($response->getLines()[0]->isSupported());
     }
 
     /** @test */
@@ -155,6 +157,7 @@ final class HtaccessClientTest extends TestCase
                 new ResultLine(
                     'RewriteRule .* /foo [R]',
                     "The new url is http://localhost/foo\nTest are stopped, a redirect will be made with status code 302",
+                    true,
                     true,
                     true,
                     true
