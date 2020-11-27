@@ -52,7 +52,8 @@ final class HtaccessClient
                         $line['message'],
                         $line['isMet'],
                         $line['isValid'],
-                        $line['wasReached']
+                        $line['wasReached'],
+                        $line['isSupported']
                     );
                 },
                 $responseData['lines']
@@ -102,7 +103,8 @@ final class HtaccessClient
                         $line['message'],
                         $line['isMet'],
                         $line['isValid'],
-                        $line['wasReached']
+                        $line['wasReached'],
+                        $line['isSupported']
                     );
                 },
                 $responseData['lines']

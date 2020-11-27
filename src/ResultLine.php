@@ -29,13 +29,25 @@ final class ResultLine
      */
     private $wasReached;
 
-    public function __construct(string $line, string $message, bool $isMet, bool $isValid, bool $wasReached)
-    {
+    /**
+     * @var bool
+     */
+    private $isSupported;
+
+    public function __construct(
+        string $line,
+        string $message,
+        bool $isMet,
+        bool $isValid,
+        bool $wasReached,
+        bool $isSupported
+    ) {
         $this->line = $line;
         $this->message = $message;
         $this->isMet = $isMet;
         $this->isValid = $isValid;
         $this->wasReached = $wasReached;
+        $this->isSupported = $isSupported;
     }
 
     public function getLine(): string
@@ -59,6 +71,11 @@ final class ResultLine
     }
 
     public function wasReached(): bool
+    {
+        return $this->wasReached;
+    }
+
+    public function isSupported(): bool
     {
         return $this->wasReached;
     }

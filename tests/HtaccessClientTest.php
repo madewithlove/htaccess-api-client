@@ -33,6 +33,7 @@ final class HtaccessClientTest extends TestCase
                     "The new url is http://localhost/foo\nTest are stopped, a redirect will be made with status code 302",
                     true,
                     true,
+                    true,
                     true
                 ),
             ],
@@ -155,6 +156,7 @@ final class HtaccessClientTest extends TestCase
                 new ResultLine(
                     'RewriteRule .* /foo [R]',
                     "The new url is http://localhost/foo\nTest are stopped, a redirect will be made with status code 302",
+                    true,
                     true,
                     true,
                     true
