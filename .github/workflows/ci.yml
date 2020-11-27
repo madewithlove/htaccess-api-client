@@ -52,7 +52,7 @@ jobs:
       run: composer self-update --snapshot && composer install -n --prefer-dist --ignore-platform-req=php
       if: matrix.php-versions == '8.0'
     - name: Run mutation tests
-      run: vendor/bin/infection --min-msi=100 --min-covered-msi=100 --show-mutations --debug -vvv
+      run: vendor/bin/infection --show-mutations --debug -vvv
 
   phpstan:
     name: PHPStan
