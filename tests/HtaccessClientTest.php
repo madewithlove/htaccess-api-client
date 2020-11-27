@@ -87,6 +87,7 @@ final class HtaccessClientTest extends TestCase
         $this->assertTrue($response->getLines()[0]->isMet());
         $this->assertTrue($response->getLines()[0]->isValid());
         $this->assertTrue($response->getLines()[0]->wasReached());
+        $this->assertTrue($response->getLines()[0]->isSupported());
     }
 
     /** @test */
