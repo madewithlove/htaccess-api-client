@@ -51,10 +51,14 @@ jobs:
     - name: Install dependencies
       run: composer self-update --snapshot && composer install -n --prefer-dist --ignore-platform-req=php
       if: matrix.php-versions == '8.0'
-    - name: Run mutation tests
+    - name: Run mutation tests with GitHub logger
       run: |
         git fetch --depth=1 origin $GITHUB_BASE_REF
         vendor/bin/infection --show-mutations --debug -vvv --logger-github --git-diff-filter=A
+      if: matrix.php-versions == '7.4'
+    - name: Run mutation tests
+      run: vendor/bin/infection --show-mutations --debug -vvv
+      if: matrix.php-versions != '7.4'
 
   phpstan:
     name: PHPStan
