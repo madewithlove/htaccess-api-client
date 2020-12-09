@@ -57,7 +57,8 @@ final class HtaccessClient
                     );
                 },
                 $responseData['lines']
-            )
+            ),
+            $responseData['output_status_code']
         );
     }
 
@@ -108,7 +109,8 @@ final class HtaccessClient
                     );
                 },
                 $responseData['lines']
-            )
+            ),
+            $responseData['output_status_code']
         );
     }
 

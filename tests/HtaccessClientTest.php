@@ -18,7 +18,7 @@ final class HtaccessClientTest extends TestCase
 
         $response = $client->test(
             'http://localhost',
-            'RewriteRule .* /foo [R]'
+            'RewriteRule .* /foo [R=301]'
         );
 
         $this->assertEquals(
@@ -27,10 +27,15 @@ final class HtaccessClientTest extends TestCase
         );
 
         $this->assertEquals(
+            301,
+            $response->getOutputStatusCode()
+        );
+
+        $this->assertEquals(
             [
                 new ResultLine(
-                    'RewriteRule .* /foo [R]',
-                    "The new url is http://localhost/foo\nTest are stopped, a redirect will be made with status code 302",
+                    'RewriteRule .* /foo [R=301]',
+                    "The new url is http://localhost/foo\nTest are stopped, a redirect will be made with status code 301",
                     true,
                     true,
                     true,
