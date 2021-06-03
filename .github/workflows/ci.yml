@@ -13,61 +13,50 @@ jobs:
       with:
         path: vendor
         key: dependencies-${{ matrix.php-versions }}-${{ hashFiles('composer.json') }}
-    - uses: shivammathur/setup-php@v2
+    - uses: shivammathur/setup-php@master
       with:
         php-version: ${{ matrix.php-versions }}
         coverage: pcov
     - name: Install dependencies
       run: composer install -n --prefer-dist
-      if: matrix.php-versions != '8.0'
-    - name: Install dependencies
-      run: composer self-update --snapshot && composer install -n --prefer-dist --ignore-platform-req=php
-      if: matrix.php-versions == '8.0'
-    - name: Run PHPUnit unit tests
+    - name: Run unit tests
       run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml --whitelist src/
     - uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-      if: matrix.php-versions == '7.4'
+      if: matrix.php-versions == '8.0'
 
   infection:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php-versions: ['7.3', '7.4']
     steps:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1
       with:
         path: vendor
         key: dependencies-${{ matrix.php-versions }}-${{ hashFiles('composer.json') }}
-    - uses: shivammathur/setup-php@v2
+    - uses: shivammathur/setup-php@master
       with:
-        php-version: ${{ matrix.php-versions }}
+        php-version: '8.0'
         coverage: pcov
     - name: Install dependencies
       run: composer install -n --prefer-dist
-      if: matrix.php-versions != '8.0'
-    - name: Install dependencies
-      run: composer self-update --snapshot && composer install -n --prefer-dist --ignore-platform-req=php
-      if: matrix.php-versions == '8.0'
     - name: Run mutation tests with GitHub logger
       run: |
         git fetch --depth=1 origin $GITHUB_BASE_REF
         vendor/bin/infection --show-mutations --debug -vvv --logger-github --git-diff-filter=A
-      if: matrix.php-versions == '7.4'
-    - name: Run mutation tests
-      run: vendor/bin/infection --show-mutations --debug -vvv
-      if: matrix.php-versions != '7.4'
 
   phpstan:
-    name: PHPStan
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - name: PHPStan
-      uses: docker://oskarstark/phpstan-ga
-      env:
-        REQUIRE_DEV: true
-      with:
-        args: analyse
+      - uses: actions/checkout@v1
+      - uses: actions/cache@v1
+        with:
+          path: vendor
+          key: dependencies-${{ matrix.php-versions }}-${{ hashFiles('composer.json') }}
+      - uses: shivammathur/setup-php@master
+        with:
+          php-version: '8.0'
+      - name: Install dependencies
+        run: composer install -n --prefer-dist
+      - name: Run static analysis
+        run: vendor/bin/phpstan analyse
