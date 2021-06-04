@@ -7,18 +7,15 @@ jobs:
     strategy:
       matrix:
         php-versions: ['7.3', '7.4', '8.0']
+        prefer-lowest: ['', '--prefer-lowest']
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        path: vendor
-        key: dependencies-${{ matrix.php-versions }}-${{ hashFiles('composer.json') }}
     - uses: shivammathur/setup-php@master
       with:
         php-version: ${{ matrix.php-versions }}
         coverage: pcov
     - name: Install dependencies
-      run: composer install -n --prefer-dist
+      run: composer update -n --prefer-dist ${{ matrix.prefer-lowest }}
     - name: Run unit tests
       run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml --whitelist src/
     - uses: codecov/codecov-action@v1
