@@ -13,6 +13,7 @@ class ServerVariablesTest extends TestCase
     public function it only allows supported variables(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unsupported server variable: foo');
         ServerVariables::empty()->with('foo', 'bar');
     }
 
@@ -27,5 +28,14 @@ class ServerVariablesTest extends TestCase
 
         $this->assertFalse($serverVariables->has(ServerVariable::SERVER_NAME));
         $this->assertEquals('', $serverVariables->get(ServerVariable::SERVER_NAME));
+    }
+
+    public function it is immutable(): void
+    {
+        $original = ServerVariables::empty();
+        $clone = $original->with(ServerVariable::SERVER_NAME, 'example.com');
+
+        $this->assertNotSame($original, $clone);
+        $this->assertFalse($original->get(ServerVariable::SERVER_NAME));
     }
 }
