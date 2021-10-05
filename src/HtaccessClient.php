@@ -7,15 +7,8 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 
 final class HtaccessClient
 {
-    /**
-     * @var ClientInterface
-     */
-    private $httpClient;
-
-    /**
-     * @var ServerRequestFactoryInterface
-     */
-    private $requestFactory;
+    private ClientInterface $httpClient;
+    private ServerRequestFactoryInterface $requestFactory;
 
     public function __construct(ClientInterface $httpClient, ServerRequestFactoryInterface $requestFactory)
     {
