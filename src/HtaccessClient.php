@@ -29,17 +29,16 @@ final class HtaccessClient
     public function test(
         string $url,
         string $htaccess,
-        ?string $referrer = '',
-        ?string $serverName = ''
+        ?ServerVariables $serverVariables = null
     ): HtaccessResult {
+        $serverVariables = $serverVariables ?? ServerVariables::empty();
         $responseData = $this->request(
             'POST',
             '',
             [
                 'url' => $url,
                 'htaccess' => $htaccess,
-                'referrer' => $referrer ?? '',
-                'serverName' => $serverName ?? '',
+                'serverVariables' => $serverVariables->toArray(),
             ]
         );
 

@@ -40,4 +40,9 @@ class ServerVariables
     {
         return $this->variables[$optionName] ?? '';
     }
+
+    public function toArray(): array
+    {
+        return $this->variables;
+    }
 }
