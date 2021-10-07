@@ -37,6 +37,6 @@ class ServerVariablesTest extends TestCase
         $clone = $original->with(ServerVariable::SERVER_NAME, 'example.com');
 
         $this->assertNotSame($original, $clone);
-        $this->assertFalse($original->get(ServerVariable::SERVER_NAME));
+        $this->assertFalse($original->has(ServerVariable::SERVER_NAME));
     }
 }
