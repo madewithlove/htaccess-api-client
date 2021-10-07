@@ -30,6 +30,7 @@ class ServerVariablesTest extends TestCase
         $this->assertEquals('', $serverVariables->get(ServerVariable::SERVER_NAME));
     }
 
+    /** @test */
     public function it is immutable(): void
     {
         $original = ServerVariables::empty();
