@@ -7,13 +7,10 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 
 final class HtaccessClient
 {
-    private ClientInterface $httpClient;
-    private ServerRequestFactoryInterface $requestFactory;
-
-    public function __construct(ClientInterface $httpClient, ServerRequestFactoryInterface $requestFactory)
-    {
-        $this->httpClient = $httpClient;
-        $this->requestFactory = $requestFactory;
+    public function __construct(
+        private ClientInterface $httpClient,
+        private ServerRequestFactoryInterface $requestFactory
+    ) {
     }
 
     /**
