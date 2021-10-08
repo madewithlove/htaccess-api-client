@@ -8,15 +8,14 @@ use InvalidArgumentException;
 
 class ServerVariables
 {
-    private array $variables = [];
-
-    private function __construct()
-    {
+    private function __construct(
+        private array $variables
+    ) {
     }
 
     public static function default(): self
     {
-        return new self();
+        return new self([]);
     }
 
     public function with(string $optionName, string $value): self
