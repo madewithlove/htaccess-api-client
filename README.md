@@ -49,3 +49,27 @@ Test are stopped, a redirect will be made with status code 302"
 }
 */
 ```
+
+### Server variables
+
+Htaccess Tester supports passing a predefined set of server variables to be evaluated by the rewrite rules.
+We currently support the following variables.
+```
+HTTP_REFERER
+SERVER_NAME
+```
+
+Server variables can be passed to the `test()` method.
+```php
+$serverVariables = ServerVariables::default()->with(
+    ServerVariable::SERVER_NAME,
+    'example.com'
+);
+
+$response = $client->test(
+    'http://localhost',
+    'RewriteCond %{SERVER_NAME} example.com
+    RewriteRule .* /foo [R]',
+    $serverVariables
+);
+```
