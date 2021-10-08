@@ -4,50 +4,14 @@ namespace Madewithlove;
 
 final class ResultLine
 {
-    /**
-     * @var string
-     */
-    private $line;
-
-    /**
-     * @var string
-     */
-    private $message;
-
-    /**
-     * @var bool
-     */
-    private $isMet;
-
-    /**
-     * @var bool
-     */
-    private $isValid;
-
-    /**
-     * @var bool
-     */
-    private $wasReached;
-
-    /**
-     * @var bool
-     */
-    private $isSupported;
-
     public function __construct(
-        string $line,
-        string $message,
-        bool $isMet,
-        bool $isValid,
-        bool $wasReached,
-        bool $isSupported
+        private string $line,
+        private string $message,
+        private bool $isMet,
+        private bool $isValid,
+        private bool $wasReached,
+        private bool $isSupported
     ) {
-        $this->line = $line;
-        $this->message = $message;
-        $this->isMet = $isMet;
-        $this->isValid = $isValid;
-        $this->wasReached = $wasReached;
-        $this->isSupported = $isSupported;
     }
 
     public function getLine(): string
