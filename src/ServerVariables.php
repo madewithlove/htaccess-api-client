@@ -14,7 +14,7 @@ class ServerVariables
     {
     }
 
-    public static function empty(): self
+    public static function default(): self
     {
         return new self();
     }

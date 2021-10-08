@@ -24,7 +24,7 @@ final class HtaccessClient
         string $htaccess,
         ?ServerVariables $serverVariables = null
     ): HtaccessResult {
-        $serverVariables = $serverVariables ?? ServerVariables::empty();
+        $serverVariables = $serverVariables ?? ServerVariables::default();
         $responseData = $this->request(
             'POST',
             '',

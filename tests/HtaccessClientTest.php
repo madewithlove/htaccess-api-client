@@ -58,7 +58,7 @@ final class HtaccessClientTest extends TestCase
             'http://localhost',
             'RewriteCond %{HTTP_REFERER} http://example.com
              RewriteRule .* /example-page [L]',
-            ServerVariables::empty()->with(
+            ServerVariables::default()->with(
                 ServerVariable::HTTP_REFERER,
                 'http://example.com'
             )
@@ -82,7 +82,7 @@ final class HtaccessClientTest extends TestCase
             'http://localhost',
             'RewriteCond %{SERVER_NAME} example.com
              RewriteRule .* /example-page [L]',
-            ServerVariables::empty()->with(
+            ServerVariables::default()->with(
                 ServerVariable::SERVER_NAME,
                 'example.com'
             )

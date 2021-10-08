@@ -14,13 +14,13 @@ class ServerVariablesTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unsupported server variable: foo');
-        ServerVariables::empty()->with('foo', 'bar');
+        ServerVariables::default()->with('foo', 'bar');
     }
 
     /** @test */
     public function it holds supported server variables(): void
     {
-        $serverVariables = ServerVariables::empty()
+        $serverVariables = ServerVariables::default()
             ->with(ServerVariable::HTTP_REFERER, 'example.com');
 
         $this->assertTrue($serverVariables->has(ServerVariable::HTTP_REFERER));
@@ -33,7 +33,7 @@ class ServerVariablesTest extends TestCase
     /** @test */
     public function it is immutable(): void
     {
-        $original = ServerVariables::empty();
+        $original = ServerVariables::default();
         $clone = $original->with(ServerVariable::SERVER_NAME, 'example.com');
 
         $this->assertNotSame($original, $clone);
