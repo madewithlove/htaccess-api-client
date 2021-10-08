@@ -41,6 +41,6 @@ final class ResultLine
 
     public function isSupported(): bool
     {
-        return $this->wasReached;
+        return $this->isSupported;
     }
 }
