@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Madewithlove;
 
-use PHPStan\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class ResultLineTest extends TestCase
 {
