@@ -4,14 +4,9 @@ namespace Madewithlove;
 
 final class ShareResult
 {
-    /**
-     * @var string
-     */
-    private $shareUrl;
-
-    public function __construct(string $shareUrl)
-    {
-        $this->shareUrl = $shareUrl;
+    public function __construct(
+        private string $shareUrl
+    ) {
     }
 
     public function getShareUrl(): string
