@@ -7,20 +7,10 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 
 final class HtaccessClient
 {
-    /**
-     * @var ClientInterface
-     */
-    private $httpClient;
-
-    /**
-     * @var ServerRequestFactoryInterface
-     */
-    private $requestFactory;
-
-    public function __construct(ClientInterface $httpClient, ServerRequestFactoryInterface $requestFactory)
-    {
-        $this->httpClient = $httpClient;
-        $this->requestFactory = $requestFactory;
+    public function __construct(
+        private ClientInterface $httpClient,
+        private ServerRequestFactoryInterface $requestFactory
+    ) {
     }
 
     /**
@@ -29,17 +19,16 @@ final class HtaccessClient
     public function test(
         string $url,
         string $htaccess,
-        ?string $referrer = '',
-        ?string $serverName = ''
+        ?ServerVariables $serverVariables = null
     ): HtaccessResult {
+        $serverVariables = $serverVariables ?? ServerVariables::default();
         $responseData = $this->request(
             'POST',
             '',
             [
                 'url' => $url,
                 'htaccess' => $htaccess,
-                'referrer' => $referrer ?? '',
-                'serverName' => $serverName ?? '',
+                'serverVariables' => $serverVariables->toArray(),
             ]
         );
 
