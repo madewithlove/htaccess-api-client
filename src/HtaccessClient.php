@@ -57,17 +57,16 @@ final class HtaccessClient
     public function share(
         string $url,
         string $htaccess,
-        ?string $referrer = '',
-        ?string $serverName = ''
+        ?ServerVariables $serverVariables = null
     ): ShareResult {
+        $serverVariables = $serverVariables ?? ServerVariables::default();
         $responseData = $this->request(
             'POST',
             '/share',
             [
                 'url' => $url,
                 'htaccess' => $htaccess,
-                'referrer' => $referrer ?? '',
-                'server_name' => $serverName ?? '',
+                'serverVariables' => $serverVariables->toArray()
             ]
         );
 
