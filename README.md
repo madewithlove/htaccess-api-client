@@ -59,7 +59,7 @@ HTTP_REFERER
 SERVER_NAME
 ```
 
-Server variables can be passed to the `test()` method.
+Server variables can be passed to the `test()` and `share()` methods.
 ```php
 $serverVariables = ServerVariables::default()->with(
     ServerVariable::SERVER_NAME,
@@ -67,6 +67,13 @@ $serverVariables = ServerVariables::default()->with(
 );
 
 $response = $client->test(
+    'http://localhost',
+    'RewriteCond %{SERVER_NAME} example.com
+    RewriteRule .* /foo [R]',
+    $serverVariables
+);
+
+$response = $client->share(
     'http://localhost',
     'RewriteCond %{SERVER_NAME} example.com
     RewriteRule .* /foo [R]',
