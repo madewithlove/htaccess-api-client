@@ -122,7 +122,7 @@ final class HtaccessClientTest extends TestCase
             'http://localhost/example-page',
             $response->getOutputUrl()
         );
-        $this->assertEquals('RewriteCond %{HTTP_USER_AGENT} (Iphone|Android)', $response->getLines()[0]->getLine());
+        $this->assertEquals('RewriteCond %{HTTP_USER_AGENT} (iPhone|Android)', $response->getLines()[0]->getLine());
         $this->assertStringContainsString('condition was met', $response->getLines()[0]->getMessage());
         $this->assertTrue($response->getLines()[0]->isMet());
         $this->assertTrue($response->getLines()[0]->isValid());
