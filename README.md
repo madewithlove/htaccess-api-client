@@ -56,6 +56,7 @@ Htaccess Tester supports passing a predefined set of server variables to be eval
 We currently support the following variables.
 ```
 HTTP_REFERER
+HTTP_USER_AGENT
 SERVER_NAME
 ```
 
