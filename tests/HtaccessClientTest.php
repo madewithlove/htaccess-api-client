@@ -101,6 +101,36 @@ final class HtaccessClientTest extends TestCase
     }
 
     /** @test */
+    public function it allows for passing an http user agent(): void
+    {
+        $client = new HtaccessClient(
+            new Client(),
+            new ServerRequestFactory()
+        );
+
+        $response = $client->test(
+            'http://localhost',
+            'RewriteCond %{HTTP_USER_AGENT} (Iphone|Android)
+             RewriteRule .* /example-page [L]',
+            ServerVariables::default()->with(
+                ServerVariable::HTTP_USER_AGENT,
+                'Android'
+            )
+        );
+
+        $this->assertEquals(
+            'http://localhost/example-page',
+            $response->getOutputUrl()
+        );
+        $this->assertEquals('RewriteCond %{HTTP_USER_AGENT} (Iphone|Android)', $response->getLines()[0]->getLine());
+        $this->assertStringContainsString('condition was met', $response->getLines()[0]->getMessage());
+        $this->assertTrue($response->getLines()[0]->isMet());
+        $this->assertTrue($response->getLines()[0]->isValid());
+        $this->assertTrue($response->getLines()[0]->wasReached());
+        $this->assertTrue($response->getLines()[0]->isSupported());
+    }
+
+    /** @test */
     public function it throws an exception when we pass an invalid url(): void
     {
         $client = new HtaccessClient(
