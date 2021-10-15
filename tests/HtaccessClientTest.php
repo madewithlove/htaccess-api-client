@@ -110,7 +110,7 @@ final class HtaccessClientTest extends TestCase
 
         $response = $client->test(
             'http://localhost',
-            'RewriteCond %{HTTP_USER_AGENT} (Iphone|Android)
+            'RewriteCond %{HTTP_USER_AGENT} (iPhone|Android)
              RewriteRule .* /example-page [L]',
             ServerVariables::default()->with(
                 ServerVariable::HTTP_USER_AGENT,
