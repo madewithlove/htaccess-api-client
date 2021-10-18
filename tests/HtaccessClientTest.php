@@ -131,6 +131,36 @@ final class HtaccessClientTest extends TestCase
     }
 
     /** @test */
+    public function it allows for passing an remote addr(): void
+    {
+        $client = new HtaccessClient(
+            new Client(),
+            new ServerRequestFactory()
+        );
+
+        $response = $client->test(
+            'http://localhost',
+            'RewriteCond %{REMOTE_ADDR} 10.0.0.1
+             RewriteRule .* /example-page [L]',
+            ServerVariables::default()->with(
+                ServerVariable::REMOTE_ADDR,
+                '10.0.0.1'
+            )
+        );
+
+        $this->assertEquals(
+            'http://localhost/example-page',
+            $response->getOutputUrl()
+        );
+        $this->assertEquals('RewriteCond %{REMOTE_ADDR} 10.0.0.1', $response->getLines()[0]->getLine());
+        $this->assertStringContainsString('condition was met', $response->getLines()[0]->getMessage());
+        $this->assertTrue($response->getLines()[0]->isMet());
+        $this->assertTrue($response->getLines()[0]->isValid());
+        $this->assertTrue($response->getLines()[0]->wasReached());
+        $this->assertTrue($response->getLines()[0]->isSupported());
+    }
+
+    /** @test */
     public function it throws an exception when we pass an invalid url(): void
     {
         $client = new HtaccessClient(
