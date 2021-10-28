@@ -9,6 +9,38 @@ use PHPUnit\Framework\TestCase;
 
 class ServerVariablesTest extends TestCase
 {
+    /**
+     * @test
+     * @dataProvider providesInvalidServerVariableNames
+     */
+    public function it does not support variables using unsupported characters(string $serverVariableName): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unsupported server variable: ' . $serverVariableName);
+        ServerVariables::default()->with($serverVariableName, 'bar');
+    }
+
+    public function providesInvalidServerVariableNames(): array
+    {
+        return [
+            [
+                'PERCENTAGE_NOT_ALLOWED%',
+            ],
+            [
+                'CURLY_BRACE_NOT_ALLOWED{',
+            ],
+            [
+                'CURLY_BRACE_NOT_ALLOWED}',
+            ],
+            [
+                'DOLLAR_NOT_ALLOWED$',
+            ],
+            [
+                'CARRET_NOT_ALLOWED^',
+            ],
+        ];
+    }
+
     /** @test */
     public function it holds supported server variables(): void
     {

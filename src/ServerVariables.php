@@ -20,6 +20,10 @@ class ServerVariables
 
     public function with(string $optionName, string $value): self
     {
+        if (!preg_match('/^[a-zA-Z1-9_\-:]+$/', $optionName)) {
+            throw new InvalidArgumentException('Unsupported server variable: ' . $optionName);
+        }
+
         $clone = clone $this;
         $clone->variables[$optionName] = $value;
 
