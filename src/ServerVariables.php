@@ -20,10 +20,6 @@ class ServerVariables
 
     public function with(string $optionName, string $value): self
     {
-        if (!in_array($optionName, ServerVariable::ALL)) {
-            throw new InvalidArgumentException('Unsupported server variable: ' . $optionName);
-        }
-
         $clone = clone $this;
         $clone->variables[$optionName] = $value;
 
