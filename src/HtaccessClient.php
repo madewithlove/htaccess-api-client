@@ -113,8 +113,11 @@ final class HtaccessClient
             'https://htaccess.madewithlove.be/api' . $endpoint
         );
 
+        /** @var string $requestBody */
+        $requestBody = json_encode($requestData);
+
         $body = $request->getBody();
-        $body->write(json_encode($requestData));
+        $body->write($requestBody);
 
         $request = $request
             ->withHeader('Content-Type', 'application/json')
