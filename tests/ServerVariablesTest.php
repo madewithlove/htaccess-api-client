@@ -38,6 +38,12 @@ class ServerVariablesTest extends TestCase
             [
                 'CARRET_NOT_ALLOWED^',
             ],
+            [
+                '%ALSO_NOT_ALLOWED_IN_BEGINNING_OF_LINE',
+            ],
+            [
+                'ALSO_NOT_ALLOWED_IN_%MIDDLE_OF_LINE',
+            ],
         ];
     }
 
