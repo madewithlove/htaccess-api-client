@@ -102,6 +102,10 @@ final class HtaccessClient
         );
     }
 
+    /**
+     * @param array<string,mixed> $requestData
+     * @return array<string,mixed>
+     */
     private function request(string $method, string $endpoint = '', array $requestData = []): array
     {
         $request = $this->requestFactory->createServerRequest(

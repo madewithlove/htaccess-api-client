@@ -20,6 +20,9 @@ class ServerVariablesTest extends TestCase
         ServerVariables::default()->with($serverVariableName, 'bar');
     }
 
+    /**
+     * @return array<int, array<string>>
+     */
     public function providesInvalidServerVariableNames(): array
     {
         return [
