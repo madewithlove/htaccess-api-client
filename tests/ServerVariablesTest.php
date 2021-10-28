@@ -10,14 +10,6 @@ use PHPUnit\Framework\TestCase;
 class ServerVariablesTest extends TestCase
 {
     /** @test */
-    public function it only allows supported variables(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Unsupported server variable: foo');
-        ServerVariables::default()->with('foo', 'bar');
-    }
-
-    /** @test */
     public function it holds supported server variables(): void
     {
         $serverVariables = ServerVariables::default()
