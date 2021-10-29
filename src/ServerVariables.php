@@ -8,6 +8,9 @@ use InvalidArgumentException;
 
 class ServerVariables
 {
+    /**
+     * @param array<string, string> $variables
+     */
     private function __construct(
         private array $variables
     ) {
@@ -40,6 +43,9 @@ class ServerVariables
         return $this->variables[$optionName] ?? '';
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function toArray(): array
     {
         return $this->variables;
