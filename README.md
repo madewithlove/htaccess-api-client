@@ -52,7 +52,7 @@ Test are stopped, a redirect will be made with status code 302"
 
 ### Server variables
 
-Htaccess Tester supports passing a server variables to be evaluated by the rewrite rules.
+Htaccess Tester supports passing server variables to be evaluated by the rewrite rules.
 We currently support the following variables.
 
 Server variables can be passed to the `test()` and `share()` methods.
