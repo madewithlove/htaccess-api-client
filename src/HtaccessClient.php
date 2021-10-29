@@ -102,6 +102,10 @@ final class HtaccessClient
         );
     }
 
+    /**
+     * @param array<string,mixed> $requestData
+     * @return array<string,mixed>
+     */
     private function request(string $method, string $endpoint = '', array $requestData = []): array
     {
         $request = $this->requestFactory->createServerRequest(
@@ -109,8 +113,11 @@ final class HtaccessClient
             'https://htaccess.madewithlove.be/api' . $endpoint
         );
 
+        /** @var string $requestBody */
+        $requestBody = json_encode($requestData);
+
         $body = $request->getBody();
-        $body->write(json_encode($requestData));
+        $body->write($requestBody);
 
         $request = $request
             ->withHeader('Content-Type', 'application/json')

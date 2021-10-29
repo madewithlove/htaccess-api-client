@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Madewithlove;
 
+/**
+ * @deprecated use regular strings instead of the constants included in this class
+ */
 final class ServerVariable
 {
     public const HTTP_REFERER = 'HTTP_REFERER';

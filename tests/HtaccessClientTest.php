@@ -302,4 +302,25 @@ final class HtaccessClientTest extends TestCase
             $sharedResult->getOutputUrl()
         );
     }
+
+    /** @test */
+    public function it accepts custom server variables as well(): void
+    {
+        $client = new HtaccessClient(
+            new Client(),
+            new ServerRequestFactory()
+        );
+
+        $response = $client->test(
+            'http://localhost',
+            'RewriteCond %{CUSTOM_VARIABLE} example.com
+             RewriteRule .* /example-page [L]',
+            ServerVariables::default()->with('CUSTOM_VARIABLE', 'example.com')
+        );
+
+        $this->assertEquals(
+            'http://localhost/example-page',
+            $response->getOutputUrl()
+        );
+    }
 }
