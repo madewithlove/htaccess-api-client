@@ -5,6 +5,22 @@ namespace Madewithlove;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 
+/**
+ * @phpstan-type HtaccessResponseData array{
+ *     'output_url': string,
+ *     'lines': array<int,array{
+*                  'value': string,
+*                  'message': string,
+*                  'isMet': bool,
+*                  'isValid': bool,
+*                  'wasReached': bool,
+*                  'isSupported': bool,
+*              }>,
+ *     'output_status_code': int,
+ *     'url':string,
+ *     'errors'?: array<int,array{'field': string, 'message': string}>
+ * }
+ */
 final class HtaccessClient
 {
     public function __construct(
@@ -22,6 +38,7 @@ final class HtaccessClient
         ?ServerVariables $serverVariables = null
     ): HtaccessResult {
         $serverVariables = $serverVariables ?? ServerVariables::default();
+        /** @var HtaccessResponseData */
         $responseData = $this->request(
             'POST',
             '',
@@ -35,7 +52,7 @@ final class HtaccessClient
         return new HtaccessResult(
             $responseData['output_url'],
             array_map(
-                function (array $line) {
+                function (array $line): ResultLine {
                     return new ResultLine(
                         $line['value'],
                         $line['message'],
@@ -60,6 +77,7 @@ final class HtaccessClient
         ?ServerVariables $serverVariables = null
     ): ShareResult {
         $serverVariables = $serverVariables ?? ServerVariables::default();
+        /** @var HtaccessResponseData */
         $responseData = $this->request(
             'POST',
             '/share',
@@ -78,6 +96,7 @@ final class HtaccessClient
      */
     public function getShared(string $shareUuid): HtaccessResult
     {
+        /** @var HtaccessResponseData */
         $responseData = $this->request(
             'GET',
             '/share?share=' . $shareUuid
@@ -125,6 +144,7 @@ final class HtaccessClient
 
         $response = $this->httpClient->sendRequest($request);
 
+        /** @var HtaccessResponseData */
         $responseData = json_decode($response->getBody()->getContents(), true);
 
         if (isset($responseData['errors'])) {
