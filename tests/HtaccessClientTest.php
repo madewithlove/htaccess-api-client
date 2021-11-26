@@ -206,7 +206,7 @@ final class HtaccessClientTest extends TestCase
         );
 
         $this->assertStringStartsWith(
-            'https://htaccess.madewithlove.be',
+            'https://htaccess.madewithlove.com',
             $response->getShareUrl()
         );
         $this->assertMatchesRegularExpression(
@@ -253,7 +253,7 @@ final class HtaccessClientTest extends TestCase
         );
 
         $this->assertStringStartsWith(
-            'https://htaccess.madewithlove.be',
+            'https://htaccess.madewithlove.com',
             $response->getShareUrl()
         );
         $this->assertMatchesRegularExpression(
@@ -286,7 +286,7 @@ final class HtaccessClientTest extends TestCase
         );
 
         $this->assertStringStartsWith(
-            'https://htaccess.madewithlove.be',
+            'https://htaccess.madewithlove.com',
             $response->getShareUrl()
         );
         $this->assertMatchesRegularExpression(
