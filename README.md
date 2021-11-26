@@ -5,7 +5,7 @@
 [![License](https://poser.pugx.org/madewithlove/htaccess-api-client/license)](https://packagist.org/packages/madewithlove/htaccess-api-client)
 [![codecov](https://codecov.io/gh/madewithlove/htaccess-api-client/branch/main/graph/badge.svg)](https://codecov.io/gh/madewithlove/htaccess-api-client)
 
-This is an API client to interact with the [Htaccess tester](https://htaccess.madewithlove.be/).
+This is an API client to interact with the [Htaccess tester](https://htaccess.madewithlove.com/).
 
 ### Installation
 

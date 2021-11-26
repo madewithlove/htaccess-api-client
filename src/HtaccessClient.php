@@ -129,7 +129,7 @@ final class HtaccessClient
     {
         $request = $this->requestFactory->createServerRequest(
             $method,
-            'https://htaccess.madewithlove.be/api' . $endpoint
+            'https://htaccess.madewithlove.com/api' . $endpoint
         );
 
         /** @var string $requestBody */
