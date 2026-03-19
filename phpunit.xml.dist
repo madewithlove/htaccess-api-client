@@ -6,4 +6,9 @@
     <testsuite name="Tests">
         <directory>tests</directory>
     </testsuite>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
 </phpunit>
