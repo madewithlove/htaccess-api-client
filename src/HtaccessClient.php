@@ -133,7 +133,6 @@ final class HtaccessClient
 
         $body = $request->getBody();
         $body->write($requestBody);
-        $body->rewind();
 
         $request = $request
             ->withHeader('Content-Type', 'application/json')
