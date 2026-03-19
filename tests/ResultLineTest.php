@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Madewithlove;
+namespace Madewithlove\HtaccessApiClient;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class ResultLineTest extends TestCase
+final class ResultLineTest extends TestCase
 {
-    /** @test */
-    public function it correctly returns all properties(): void
+    #[Test]
+    public function it_correctly_returns_all_properties(): void
     {
         $resultLine = new ResultLine('foo', 'bar', true, true, true, true);
         $this->assertEquals('foo', $resultLine->getLine());

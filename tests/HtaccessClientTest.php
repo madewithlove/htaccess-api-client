@@ -1,19 +1,22 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Madewithlove;
+declare(strict_types=1);
 
-use Http\Adapter\Guzzle7\Client;
-use Http\Factory\Guzzle\ServerRequestFactory;
+namespace Madewithlove\HtaccessApiClient;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\HttpFactory;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 final class HtaccessClientTest extends TestCase
 {
-    /** @test */
-    public function it returns the result from the api(): void
+    #[Test]
+    public function it_returns_the_result_from_the_api(): void
     {
         $client = new HtaccessClient(
             new Client(),
-            new ServerRequestFactory()
+            new HttpFactory()
         );
 
         $response = $client->test(
@@ -46,12 +49,12 @@ final class HtaccessClientTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it allows for passing a referrer(): void
+    #[Test]
+    public function it_allows_for_passing_a_referrer(): void
     {
         $client = new HtaccessClient(
             new Client(),
-            new ServerRequestFactory()
+            new HttpFactory()
         );
 
         $response = $client->test(
@@ -59,7 +62,7 @@ final class HtaccessClientTest extends TestCase
             'RewriteCond %{HTTP_REFERER} http://example.com
              RewriteRule .* /example-page [L]',
             ServerVariables::default()->with(
-                ServerVariable::HTTP_REFERER,
+                'HTTP_REFERER',
                 'http://example.com'
             )
         );
@@ -70,12 +73,12 @@ final class HtaccessClientTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it allows for passing a server name(): void
+    #[Test]
+    public function it_allows_for_passing_a_server_name(): void
     {
         $client = new HtaccessClient(
             new Client(),
-            new ServerRequestFactory()
+            new HttpFactory()
         );
 
         $response = $client->test(
@@ -83,7 +86,7 @@ final class HtaccessClientTest extends TestCase
             'RewriteCond %{SERVER_NAME} example.com
              RewriteRule .* /example-page [L]',
             ServerVariables::default()->with(
-                ServerVariable::SERVER_NAME,
+                'SERVER_NAME',
                 'example.com'
             )
         );
@@ -100,12 +103,12 @@ final class HtaccessClientTest extends TestCase
         $this->assertTrue($response->getLines()[0]->isSupported());
     }
 
-    /** @test */
-    public function it allows for passing an http user agent(): void
+    #[Test]
+    public function it_allows_for_passing_an_http_user_agent(): void
     {
         $client = new HtaccessClient(
             new Client(),
-            new ServerRequestFactory()
+            new HttpFactory()
         );
 
         $response = $client->test(
@@ -113,7 +116,7 @@ final class HtaccessClientTest extends TestCase
             'RewriteCond %{HTTP_USER_AGENT} (iPhone|Android)
              RewriteRule .* /example-page [L]',
             ServerVariables::default()->with(
-                ServerVariable::HTTP_USER_AGENT,
+                'HTTP_USER_AGENT',
                 'Android'
             )
         );
@@ -130,12 +133,12 @@ final class HtaccessClientTest extends TestCase
         $this->assertTrue($response->getLines()[0]->isSupported());
     }
 
-    /** @test */
-    public function it allows for passing an remote addr(): void
+    #[Test]
+    public function it_allows_for_passing_a_remote_addr(): void
     {
         $client = new HtaccessClient(
             new Client(),
-            new ServerRequestFactory()
+            new HttpFactory()
         );
 
         $response = $client->test(
@@ -143,7 +146,7 @@ final class HtaccessClientTest extends TestCase
             'RewriteCond %{REMOTE_ADDR} 10.0.0.1
              RewriteRule .* /example-page [L]',
             ServerVariables::default()->with(
-                ServerVariable::REMOTE_ADDR,
+                'REMOTE_ADDR',
                 '10.0.0.1'
             )
         );
@@ -160,12 +163,12 @@ final class HtaccessClientTest extends TestCase
         $this->assertTrue($response->getLines()[0]->isSupported());
     }
 
-    /** @test */
-    public function it throws an exception when we pass an invalid url(): void
+    #[Test]
+    public function it_throws_an_exception_when_we_pass_an_invalid_url(): void
     {
         $client = new HtaccessClient(
             new Client(),
-            new ServerRequestFactory()
+            new HttpFactory()
         );
 
         $this->expectExceptionMessage('url: This is not a valid url');
@@ -176,15 +179,15 @@ final class HtaccessClientTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it throws an exception when we pass multiple invalid fields(): void
+    #[Test]
+    public function it_throws_an_exception_when_we_pass_multiple_invalid_fields(): void
     {
         $client = new HtaccessClient(
             new Client(),
-            new ServerRequestFactory()
+            new HttpFactory()
         );
 
-        $this->expectExceptionMessage("url: This is not a valid url\nhtaccess: htaccess must not be empty");
+        $this->expectExceptionMessage("url: This is not a valid url\nhtaccess: The htaccess content field is required.");
         $this->expectException(HtaccessException::class);
         $client->test(
             'http:localhost',
@@ -192,12 +195,12 @@ final class HtaccessClientTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it can share a test run(): void
+    #[Test]
+    public function it_can_share_a_test_run(): void
     {
         $client = new HtaccessClient(
             new Client(),
-            new ServerRequestFactory()
+            new HttpFactory()
         );
 
         $response = $client->share(
@@ -237,19 +240,19 @@ final class HtaccessClientTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it can share a test run with a referer(): void
+    #[Test]
+    public function it_can_share_a_test_run_with_a_referer(): void
     {
         $client = new HtaccessClient(
             new Client(),
-            new ServerRequestFactory()
+            new HttpFactory()
         );
 
         $response = $client->share(
             'http://localhost',
             'RewriteCond %{HTTP_REFERER} http://example.com
              RewriteRule .* /example-page [L]',
-            ServerVariables::default()->with(ServerVariable::HTTP_REFERER, 'http://example.com')
+            ServerVariables::default()->with('HTTP_REFERER', 'http://example.com')
         );
 
         $this->assertStringStartsWith(
@@ -270,19 +273,19 @@ final class HtaccessClientTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it can share a test run with a server name(): void
+    #[Test]
+    public function it_can_share_a_test_run_with_a_server_name(): void
     {
         $client = new HtaccessClient(
             new Client(),
-            new ServerRequestFactory()
+            new HttpFactory()
         );
 
         $response = $client->share(
             'http://localhost',
             'RewriteCond %{SERVER_NAME} example.com
              RewriteRule .* /example-page [L]',
-            ServerVariables::default()->with(ServerVariable::SERVER_NAME, 'example.com')
+            ServerVariables::default()->with('SERVER_NAME', 'example.com')
         );
 
         $this->assertStringStartsWith(
@@ -303,12 +306,12 @@ final class HtaccessClientTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it accepts custom server variables as well(): void
+    #[Test]
+    public function it_accepts_custom_server_variables_as_well(): void
     {
         $client = new HtaccessClient(
             new Client(),
-            new ServerRequestFactory()
+            new HttpFactory()
         );
 
         $response = $client->test(

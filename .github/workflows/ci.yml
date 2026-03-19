@@ -1,59 +1,61 @@
-name: Continious Integration
-on: push
+name: CI
+
+on:
+  push:
+  pull_request:
 
 jobs:
   phpunit:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php-versions: ['8.0', '8.1']
-        prefer-lowest: ['', '--prefer-lowest']
     steps:
-    - uses: actions/checkout@v1
-    - uses: shivammathur/setup-php@master
-      with:
-        php-version: ${{ matrix.php-versions }}
-        coverage: pcov
-    - name: Install dependencies
-      run: composer update -n --prefer-dist ${{ matrix.prefer-lowest }}
-    - name: Run unit tests
-      run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml --whitelist src/
-    - uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-      if: matrix.php-versions == '8.0'
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: xdebug
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Run tests
+        run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
+      - uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   infection:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        path: vendor
-        key: dependencies-${{ matrix.php-versions }}-${{ hashFiles('composer.json') }}
-    - uses: shivammathur/setup-php@master
-      with:
-        php-version: '8.0'
-        coverage: pcov
-    - name: Install dependencies
-      run: composer install -n --prefer-dist
-    - name: Run mutation tests with GitHub logger
-      run: |
-        git fetch --depth=1 origin $GITHUB_BASE_REF
-        vendor/bin/infection --show-mutations --debug -vvv --logger-github --git-diff-filter=A
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: xdebug
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Run mutation tests
+        run: |
+          git fetch --depth=1 origin $GITHUB_BASE_REF || true
+          vendor/bin/infection --show-mutations --logger-github
 
   phpstan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/cache@v1
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
         with:
-          path: vendor
-          key: dependencies-${{ matrix.php-versions }}-${{ hashFiles('composer.json') }}
-      - uses: shivammathur/setup-php@master
-        with:
-          php-version: '8.0'
+          php-version: '8.4'
       - name: Install dependencies
-        run: composer install -n --prefer-dist
+        run: composer install --no-interaction --prefer-dist
       - name: Run static analysis
         run: vendor/bin/phpstan analyse
+
+  cs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Check code style
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff

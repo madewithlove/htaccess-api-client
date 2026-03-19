@@ -1,8 +1,10 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Madewithlove;
+declare(strict_types=1);
 
-final class HtaccessResult
+namespace Madewithlove\HtaccessApiClient;
+
+final readonly class HtaccessResult
 {
     /**
      * @param ResultLine[] $lines
