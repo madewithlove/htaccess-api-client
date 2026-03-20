@@ -1,8 +1,10 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Madewithlove;
+declare(strict_types=1);
 
-final class ResultLine
+namespace Madewithlove\HtaccessApiClient;
+
+final readonly class ResultLine
 {
     public function __construct(
         private string $line,

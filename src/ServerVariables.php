@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Madewithlove;
+namespace Madewithlove\HtaccessApiClient;
 
 use InvalidArgumentException;
 
-class ServerVariables
+final class ServerVariables
 {
     /**
      * @param array<string, string> $variables

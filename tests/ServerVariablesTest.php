@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Madewithlove;
+namespace Madewithlove\HtaccessApiClient;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class ServerVariablesTest extends TestCase
+final class ServerVariablesTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider providesInvalidServerVariableNames
-     */
-    public function it does not support variables using unsupported characters(string $serverVariableName): void
+    #[Test]
+    #[DataProvider('providesInvalidServerVariableNames')]
+    public function it_does_not_support_variables_using_unsupported_characters(string $serverVariableName): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unsupported server variable: ' . $serverVariableName);
@@ -23,53 +23,39 @@ class ServerVariablesTest extends TestCase
     /**
      * @return array<int, array<string>>
      */
-    public function providesInvalidServerVariableNames(): array
+    public static function providesInvalidServerVariableNames(): array
     {
         return [
-            [
-                'PERCENTAGE_NOT_ALLOWED%',
-            ],
-            [
-                'CURLY_BRACE_NOT_ALLOWED{',
-            ],
-            [
-                'CURLY_BRACE_NOT_ALLOWED}',
-            ],
-            [
-                'DOLLAR_NOT_ALLOWED$',
-            ],
-            [
-                'CARRET_NOT_ALLOWED^',
-            ],
-            [
-                '%ALSO_NOT_ALLOWED_IN_BEGINNING_OF_LINE',
-            ],
-            [
-                'ALSO_NOT_ALLOWED_IN_%MIDDLE_OF_LINE',
-            ],
+            ['PERCENTAGE_NOT_ALLOWED%'],
+            ['CURLY_BRACE_NOT_ALLOWED{'],
+            ['CURLY_BRACE_NOT_ALLOWED}'],
+            ['DOLLAR_NOT_ALLOWED$'],
+            ['CARRET_NOT_ALLOWED^'],
+            ['%ALSO_NOT_ALLOWED_IN_BEGINNING_OF_LINE'],
+            ['ALSO_NOT_ALLOWED_IN_%MIDDLE_OF_LINE'],
         ];
     }
 
-    /** @test */
-    public function it holds supported server variables(): void
+    #[Test]
+    public function it_holds_supported_server_variables(): void
     {
         $serverVariables = ServerVariables::default()
-            ->with(ServerVariable::HTTP_REFERER, 'example.com');
+            ->with('HTTP_REFERER', 'example.com');
 
-        $this->assertTrue($serverVariables->has(ServerVariable::HTTP_REFERER));
-        $this->assertEquals('example.com', $serverVariables->get(ServerVariable::HTTP_REFERER));
+        $this->assertTrue($serverVariables->has('HTTP_REFERER'));
+        $this->assertEquals('example.com', $serverVariables->get('HTTP_REFERER'));
 
-        $this->assertFalse($serverVariables->has(ServerVariable::SERVER_NAME));
-        $this->assertEquals('', $serverVariables->get(ServerVariable::SERVER_NAME));
+        $this->assertFalse($serverVariables->has('SERVER_NAME'));
+        $this->assertEquals('', $serverVariables->get('SERVER_NAME'));
     }
 
-    /** @test */
-    public function it is immutable(): void
+    #[Test]
+    public function it_is_immutable(): void
     {
         $original = ServerVariables::default();
-        $clone = $original->with(ServerVariable::SERVER_NAME, 'example.com');
+        $clone = $original->with('SERVER_NAME', 'example.com');
 
         $this->assertNotSame($original, $clone);
-        $this->assertFalse($original->has(ServerVariable::SERVER_NAME));
+        $this->assertFalse($original->has('SERVER_NAME'));
     }
 }

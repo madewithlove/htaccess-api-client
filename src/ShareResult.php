@@ -1,8 +1,10 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Madewithlove;
+declare(strict_types=1);
 
-final class ShareResult
+namespace Madewithlove\HtaccessApiClient;
+
+final readonly class ShareResult
 {
     public function __construct(
         private string $shareUrl

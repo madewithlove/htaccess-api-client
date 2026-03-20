@@ -1,6 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Madewithlove;
+declare(strict_types=1);
+
+namespace Madewithlove\HtaccessApiClient;
 
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
@@ -18,7 +20,6 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 *              }>,
  *     'output_status_code': int,
  *     'url':string,
- *     'errors'?: array<int,array{'field': string, 'message': string}>
  * }
  */
 final class HtaccessClient
@@ -37,7 +38,7 @@ final class HtaccessClient
         string $htaccess,
         ?ServerVariables $serverVariables = null
     ): HtaccessResult {
-        $serverVariables = $serverVariables ?? ServerVariables::default();
+        $serverVariables ??= ServerVariables::default();
         /** @var HtaccessResponseData */
         $responseData = $this->request(
             'POST',
@@ -52,16 +53,14 @@ final class HtaccessClient
         return new HtaccessResult(
             $responseData['output_url'],
             array_map(
-                function (array $line): ResultLine {
-                    return new ResultLine(
-                        $line['value'],
-                        $line['message'],
-                        $line['isMet'],
-                        $line['isValid'],
-                        $line['wasReached'],
-                        $line['isSupported']
-                    );
-                },
+                fn (array $line): ResultLine => new ResultLine(
+                    $line['value'],
+                    $line['message'],
+                    $line['isMet'],
+                    $line['isValid'],
+                    $line['wasReached'],
+                    $line['isSupported']
+                ),
                 $responseData['lines']
             ),
             $responseData['output_status_code']
@@ -76,7 +75,7 @@ final class HtaccessClient
         string $htaccess,
         ?ServerVariables $serverVariables = null
     ): ShareResult {
-        $serverVariables = $serverVariables ?? ServerVariables::default();
+        $serverVariables ??= ServerVariables::default();
         /** @var HtaccessResponseData */
         $responseData = $this->request(
             'POST',
@@ -84,7 +83,7 @@ final class HtaccessClient
             [
                 'url' => $url,
                 'htaccess' => $htaccess,
-                'serverVariables' => $serverVariables->toArray()
+                'serverVariables' => $serverVariables->toArray(),
             ]
         );
 
@@ -105,16 +104,14 @@ final class HtaccessClient
         return new HtaccessResult(
             $responseData['output_url'],
             array_map(
-                function (array $line) {
-                    return new ResultLine(
-                        $line['value'],
-                        $line['message'],
-                        $line['isMet'],
-                        $line['isValid'],
-                        $line['wasReached'],
-                        $line['isSupported']
-                    );
-                },
+                fn (array $line): ResultLine => new ResultLine(
+                    $line['value'],
+                    $line['message'],
+                    $line['isMet'],
+                    $line['isValid'],
+                    $line['wasReached'],
+                    $line['isSupported']
+                ),
                 $responseData['lines']
             ),
             $responseData['output_status_code']
@@ -132,25 +129,32 @@ final class HtaccessClient
             'https://htaccess.madewithlove.com/api' . $endpoint
         );
 
-        /** @var string $requestBody */
-        $requestBody = json_encode($requestData);
+        $requestBody = json_encode($requestData, JSON_THROW_ON_ERROR);
 
         $body = $request->getBody();
         $body->write($requestBody);
 
         $request = $request
             ->withHeader('Content-Type', 'application/json')
+            ->withHeader('Accept', 'application/json')
             ->withBody($body);
 
         $response = $this->httpClient->sendRequest($request);
 
-        /** @var HtaccessResponseData */
+        /** @var array{errors?: array<string, array<string>>}|HtaccessResponseData|null */
         $responseData = json_decode($response->getBody()->getContents(), true);
 
-        if (isset($responseData['errors'])) {
-            throw HtaccessException::fromApiErrors($responseData['errors']);
+        if (!is_array($responseData)) {
+            throw new HtaccessException('Unexpected response from API');
         }
 
+        if (isset($responseData['errors'])) {
+            /** @var array<string, array<string>> $errors */
+            $errors = $responseData['errors'];
+            throw HtaccessException::fromApiErrors($errors);
+        }
+
+        /** @var HtaccessResponseData $responseData */
         return $responseData;
     }
 }
