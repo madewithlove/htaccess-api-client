@@ -6,8 +6,10 @@ namespace Madewithlove\HtaccessApiClient;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Client\ClientInterface;
 
 final class HtaccessClientTest extends TestCase
 {
@@ -325,5 +327,18 @@ final class HtaccessClientTest extends TestCase
             'http://localhost/example-page',
             $response->getOutputUrl()
         );
+    }
+
+    #[Test]
+    public function it_throws_when_the_api_returns_a_non_json_response(): void
+    {
+        $httpClient = $this->createStub(ClientInterface::class);
+        $httpClient->method('sendRequest')->willReturn(new Response(200, [], 'not json'));
+
+        $client = new HtaccessClient($httpClient, new HttpFactory());
+
+        $this->expectException(HtaccessException::class);
+        $this->expectExceptionMessage('Unexpected response from API');
+        $client->test('http://localhost', 'RewriteRule .* /foo [R=301]');
     }
 }
