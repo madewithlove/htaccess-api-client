@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🚀  Enable automerge on dependabot PRs
-        uses: daneden/enable-automerge-action@v1
-        with:
+        run: gh pr merge --merge --auto "1"
+        env:
           # A personal access token that you have generated and saved in the
           # repo or org’s encrypted secrets
-          github-token: ${{ secrets.DEPENDABOT_AUTO_MERGE_PERSONAL_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.DEPENDABOT_AUTO_MERGE_PERSONAL_ACCESS_TOKEN }}
