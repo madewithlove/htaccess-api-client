@@ -1,17 +1,19 @@
 name: Enable automerge on dependabot PRs
 
 on:
-  # See note below about using pull_request_target
-  pull_request_target:
+    # See note below about using pull_request_target
+    pull_request_target:
 
 jobs:
-  automerge:
-    name: 🚀  Enable automerge on dependabot PRs
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🚀  Enable automerge on dependabot PRs
-        run: gh pr merge --merge --auto "1"
-        env:
-          # A personal access token that you have generated and saved in the
-          # repo or org’s encrypted secrets
-          GH_TOKEN: ${{ secrets.DEPENDABOT_AUTO_MERGE_PERSONAL_ACCESS_TOKEN }}
+    automerge:
+        name: 🚀  Enable automerge on dependabot PRs
+        runs-on: ubuntu-latest
+        if: github.event.pull_request.user.login == 'dependabot[bot]'
+        steps:
+            - name: 🚀  Enable automerge on dependabot PRs
+              run: gh pr merge --merge --auto "$PR_URL"
+              env:
+                  PR_URL: ${{ github.event.pull_request.html_url }}
+                  # A personal access token that you have generated and saved in the
+                  # repo or org’s encrypted secrets
+                  GH_TOKEN: ${{ secrets.DEPENDABOT_AUTO_MERGE_PERSONAL_ACCESS_TOKEN }}
