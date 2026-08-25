@@ -18,7 +18,7 @@
         "phpunit/phpunit": "^13.0",
         "guzzlehttp/guzzle": "^7.0",
         "guzzlehttp/psr7": "^2.0",
-        "infection/infection": "^0.32 || ^0.33",
+        "infection/infection": "^0.32 || ^0.33 || ^0.35",
         "phpstan/phpstan": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.0"
     },
